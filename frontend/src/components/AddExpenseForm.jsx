@@ -1,64 +1,127 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Plus, DollarSign, Tag, Calendar, Loader2 } from "lucide-react";
+import { expenseAPI } from "../services/api";
+import "./AddExpenseForm.css";
 
-function AddExpenseForm() {
+const CATEGORIES = ["Food", "Transport", "Shopping", "Bills", "Entertainment", "Health", "Other", "Income"];
 
-  const [title, setTitle] = useState("");
-  const [amount, setAmount] = useState("");
+function AddExpenseForm({ onAdded }) {
+  const [loading,  setLoading]  = useState(false);
+  const [type,     setType]     = useState("expense");
+  const [title,    setTitle]    = useState("");
+  const [amount,   setAmount]   = useState("");
   const [category, setCategory] = useState("");
+  const [date,     setDate]     = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const newExpense = {
-      title,
-      amount,
-      category
-    };
-
-    console.log(newExpense);
-
-    setTitle("");
-    setAmount("");
-    setCategory("");
+    if (!title || !amount || !category) return;
+    
+    setLoading(true);
+    try {
+      const finalAmount = type === "expense" ? -Math.abs(Number(amount)) : Math.abs(Number(amount));
+      
+      await expenseAPI.addExpense({
+        title,
+        amount: finalAmount,
+        category,
+        date: date || new Date().toISOString()
+      });
+      
+      setTitle(""); setAmount(""); setCategory(""); setDate(""); setType("expense");
+      if (onAdded) onAdded();
+    } catch (err) {
+      console.error(err);
+      alert("Failed to add transaction");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="form-container">
+    <form className="addform" onSubmit={handleSubmit}>
 
-      <h3>Add Expense</h3>
-
-      <form onSubmit={handleSubmit}>
-
-        <input
-          type="text"
-          placeholder="Expense Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-
-        <input
-          type="number"
-          placeholder="Amount"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-        />
-
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
+      {/* Type toggle */}
+      <div className="addform-toggle">
+        <button
+          type="button"
+          className={`addform-toggle-btn ${type === "expense" ? "addform-toggle-btn--active addform-toggle-btn--red" : ""}`}
+          onClick={() => setType("expense")}
         >
-          <option value="">Select Category</option>
-          <option>Food</option>
-          <option>Transport</option>
-          <option>Shopping</option>
-          <option>Bills</option>
-        </select>
+          Expense
+        </button>
+        <button
+          type="button"
+          className={`addform-toggle-btn ${type === "income" ? "addform-toggle-btn--active addform-toggle-btn--green" : ""}`}
+          onClick={() => setType("income")}
+        >
+          Income
+        </button>
+      </div>
 
-        <button type="submit">Add Expense</button>
+      {/* Fields */}
+      <div className="addform-fields">
+        <div className="addform-field">
+          <Tag size={13} className="addform-icon" />
+          <input
+            className="addform-input"
+            type="text"
+            placeholder="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+        </div>
 
-      </form>
+        <div className="addform-field">
+          <DollarSign size={13} className="addform-icon" />
+          <input
+            className="addform-input"
+            type="number"
+            placeholder="Amount (₹)"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            min="0"
+            required
+          />
+        </div>
 
-    </div>
+        <div className="addform-field">
+          <Tag size={13} className="addform-icon" />
+          <select
+            className="addform-input addform-select"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            required
+          >
+            <option value="">Category</option>
+            {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
+        </div>
+
+        <div className="addform-field">
+          <Calendar size={13} className="addform-icon" />
+          <input
+            className="addform-input"
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+          />
+        </div>
+      </div>
+
+      <motion.button
+        type="submit"
+        className={`addform-submit ${type === "income" ? "addform-submit--green" : ""}`}
+        whileHover={{ scale: 1.015 }}
+        whileTap={{ scale: 0.98 }}
+        disabled={loading}
+      >
+        {loading ? <Loader2 size={14} className="animate-spin" /> : <Plus size={14} strokeWidth={2.5} />}
+        {loading ? "Adding..." : `Add ${type === "expense" ? "Expense" : "Income"}`}
+      </motion.button>
+    </form>
   );
 }
 

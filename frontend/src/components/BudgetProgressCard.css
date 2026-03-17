@@ -1,0 +1,42 @@
+/* Budget Progress */
+.budget-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.budget-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.budget-cat {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.budget-amounts {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.budget-amounts.over {
+  color: var(--red);
+  font-weight: 600;
+}
+
+.budget-track {
+  height: 6px;
+  background: var(--bg-elevated);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.budget-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.6s ease;
+}

@@ -1,0 +1,121 @@
+/* ── Add Transaction Form ── */
+.addform {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Toggle row */
+.addform-toggle {
+  display: flex;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  gap: 3px;
+}
+
+.addform-toggle-btn {
+  flex: 1;
+  padding: 7px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12.5px;
+  font-family: var(--font);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.addform-toggle-btn--active.addform-toggle-btn--red {
+  background: var(--red-dim);
+  color: var(--red);
+}
+
+.addform-toggle-btn--active.addform-toggle-btn--green {
+  background: var(--green-dim);
+  color: var(--green);
+}
+
+/* Fields */
+.addform-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.addform-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.addform-icon {
+  position: absolute;
+  left: 11px;
+  color: var(--text-muted);
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.addform-input {
+  width: 100%;
+  padding: 9px 10px 9px 32px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 12.5px;
+  font-family: var(--font);
+  transition: var(--transition);
+}
+
+.addform-input::placeholder { color: var(--text-muted); }
+
+.addform-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-glow);
+}
+
+.addform-select {
+  appearance: none;
+  cursor: pointer;
+}
+
+.addform-select option {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+input[type="date"].addform-input::-webkit-calendar-picker-indicator {
+  filter: invert(0.5);
+  cursor: pointer;
+}
+
+/* Submit */
+.addform-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font);
+  cursor: pointer;
+  box-shadow: 0 4px 14px var(--accent-glow);
+  margin-top: 2px;
+}
+
+.addform-submit--green {
+  background: linear-gradient(135deg, #059669, #10b981);
+  box-shadow: 0 4px 14px var(--green-glow);
+}

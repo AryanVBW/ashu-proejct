@@ -1,3 +1,39 @@
+# Dependencies
 node_modules/
-backend/node_modules/
+**/node_modules/
+
+# Build output
+dist/
+build/
+.next/
+out/
+
+# Environment files — DO NOT COMMIT
 .env
+.env.local
+.env.*.local
+**/.env
+**/.env.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor directories
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# MongoDB data directory (if running locally)
+data/db/
